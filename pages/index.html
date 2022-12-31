@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/style.css">
+    <title>Prestamos</title>
+    <script type="text/javaScript" src="../scripts/index.js"></script>
+</head>
+<body id="body_principal">
+    <header>
+        <nav>
+           
+            <div class="nav__ul">
+                <ul class=" ">
+                    <li>
+                        <a class="menu menu--1" href="" >Inicio</a>
+                    </li>
+                    <li>
+                        <a class="menu menu--2" href="" >Info</a>
+                    </li>
+                    <li>
+                        <a class="menu menu--3" href="" >Imagenes</a>
+                    </li>
+                    <li>
+                        <a class="menu menu--4" href="" >Videos</a>
+                    </li>
+                    <li>
+                        <a class="menu menu--5" href="" >Contacto</a> 
+                    </li>                  
+                </ul>
+            </div>
+        </nav> 
+    </header>
+    <main>
+        <H1>
+            Te invitamos a soñar con nuestros Préstamos                
+        </H1>
+    
+        <form method="post" id="formulario">
+            <legend>FORMULARIO DE CONTACTO</legend>
+            <div class="ingresar">
+                <label for="nombre" >Ingrese su nombre: </label>
+                <input type="text" id="nombre" placeholder="Ingrese su nombre">
+            </div>
+            <div class="ingresar">
+                <label for="apellido" >Ingrese su apellido: </label>
+                <input type="text" id="apellido" placeholder="Ingrese su Apellido">
+            </div>
+            <div class="ingresar">
+                <label for="dni" >Ingrese su DNI: </label>
+                <input type="number" id="dni" placeholder="Ingrese su DNI">
+            </div>
+            <div class="ingresar" >
+                <label for="email">Ingrese su correo: </label>
+                <input type="email" id="email" placeholder="Ingrese su correo">
+            </div>
+            </div> -->
+            <div class="ingresar" >
+                <label for="nacimiento">Ingrese su fecha de nacimiento: </label>
+                <input type="date" id="nacimiento">
+            </div>
+            <div class="ingresar">
+                <h4>¿Cuanto es el monto que va a solicitar?</h4>
+                <div class="ingresar__monto">
+                    <input type="radio" name="edad" value="Mayor"> $ 10.000
+                </div> 
+                <div class="ingresar__monto">
+                    <input type="radio" name="edad" value="Menor"> $ 20.000
+                </div>
+                <div class="ingresar__monto">
+                    <input type="radio" name="edad" value="Menor"> $ 30.000
+                </div>
+            </div>
+            <div class="ingresar">
+                <h4>¿Cuanto cuotas?</h4>
+                <div class="ingresar__cuotas">
+                    <input type="radio" name="edad" value="Mayor"> 12
+                </div> 
+                <div class="ingresar__cuotas">
+                    <input type="radio" name="edad" value="Menor"> 24
+                </div>
+                <div class="ingresar__cuotas">
+                    <input type="radio" name="edad" value="Menor"> 36
+                </div>
+            </div>
+            <div class="ingresar" id="boton_formulario" >
+                <input id="enviar" type="submit" value="Enviar" >
+                <input id="reset" type="reset" value="Limpiar">
+            </div>
+            
+        </form>
+    </main>
+    <footer>
+
+    </footer>
+</body>
+</html>

@@ -1,0 +1,116 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'Aboreto', cursive;
+}
+
+#body_principal{
+    background-image: url(../imagenes/body_principal_\ img.jpg);
+    background-repeat: no-repeat ;
+    background-attachment: fixed;
+    background-position: center center;
+    background-size: cover;  
+}
+
+h1{
+    color: white;
+    margin-top: 10vh;
+    text-align: center;
+    height: 10vh;
+    font-size: xxx-large;
+}
+
+header{
+
+    background-image: linear-gradient(to right, rgba(16, 71, 5, 0.945), rgb(167, 238, 125));
+    background-size: center;
+    width: 100vw;
+    height: 5vh;
+    min-height: 45px;
+    
+}
+
+nav{
+    height: 15vh;
+    display: flex;
+    
+    align-items:initial;
+    justify-content: center; 
+    align-content: center;
+    margin-top: 10px;
+        
+}
+
+.nav__ul{
+    height: 5vh;
+    grid-area: header;
+    
+}
+
+ul { 
+    display: flex;
+    flex-direction: row; 
+    font-family: 'Aboreto', cursive;
+    list-style-type: none;
+    text-align: left;
+    text-decoration: none;
+    
+}
+
+li {
+    margin: 1rem;
+   
+}
+
+li:hover{
+    margin-top: 2rem;   
+    
+}
+a {
+    color: white;
+    text-decoration: none
+}
+
+.body__contacto{
+    background-image: url("../assets/imagenes/techno3.jpg") ;
+    background-repeat: no-repeat ;
+    background-attachment: fixed;
+    background-position: center center;
+    background-size: cover;
+    
+}
+
+#formulario{
+    background-image: linear-gradient(to right, rgba(16, 71, 5, 0.945), rgb(167, 238, 125));;
+    margin: 2rem;
+    border-bottom-right-radius: 2rem;
+    color: white;
+    padding: 2rem;
+    min-width: fit-content;
+      
+}
+
+legend{
+    font-size: 30px;
+}
+.ingresar{
+    margin-top: 1rem;
+    font-size: 20px;
+}
+.ingresar{
+    margin-top: 1rem;
+    font-size: 20px;
+    
+}  
+h4{
+    margin-top: 1rem;
+}
+.ingresar__radio{
+    margin-top: 0.5rem;
+}
+#boton_formulario input{
+    margin-top: 1rem;
+    font-size: 20px;
+    padding: .5rem;
+    border-radius: .3rem;
+}
