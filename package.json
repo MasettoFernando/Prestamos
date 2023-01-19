@@ -1,5 +1,28 @@
 {
   "dependencies": {
     "arg.js": "^1.1.7"
-  }
+  },
+  "name": "pre-rentrega-1-masett-js",
+  "version": "1.0.0",
+  "description": "Prestamos",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MasettoFernando/Prestamos.git"
+  },
+  "keywords": [
+    "prestamos",
+    "js",
+    "api"
+  ],
+  "author": "Fernando Masetto",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MasettoFernando/Prestamos/issues"
+  },
+  "homepage": "https://github.com/MasettoFernando/Prestamos#readme"
 }
