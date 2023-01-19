@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/style.css">
     <title>Prestamos</title>
-    <script type="text/javaScript" src="../scripts/index.js"></script>
+    
 </head>
 <body id="body_principal">
     <header>
@@ -37,6 +37,20 @@
         <H1>
             Te invitamos a soñar con nuestros Préstamos                
         </H1>
+
+        <div id="modal" class="modal-container">
+            <div class="modal-content">
+                <h2>¡Su pedido se realizo con exito!</h2>
+                <img src="" alt="">
+                <p id="ventana__informacion">
+                    
+                </p>
+                <div id="close" class="ingresar">
+                    <input  id="boton_informacion_ aceptar" type="button" value="Enviar" >
+                    <input  id="boton_informacion_eliminar" type="reset" value="Eliminar">
+                </div>
+            </div>
+        </div>
     
         <form method="post" id="formulario">
             <legend>FORMULARIO DE CONTACTO</legend>
@@ -56,44 +70,49 @@
                 <label for="email">Ingrese su correo: </label>
                 <input type="email" id="email" placeholder="Ingrese su correo">
             </div>
-            </div> -->
+            </div> 
             <div class="ingresar" >
                 <label for="nacimiento">Ingrese su fecha de nacimiento: </label>
                 <input type="date" id="nacimiento">
             </div>
+
             <div class="ingresar">
                 <h4>¿Cuanto es el monto que va a solicitar?</h4>
-                <div class="ingresar__monto">
-                    <input type="radio" name="edad" value="Mayor"> $ 10.000
-                </div> 
-                <div class="ingresar__monto">
-                    <input type="radio" name="edad" value="Menor"> $ 20.000
-                </div>
-                <div class="ingresar__monto">
-                    <input type="radio" name="edad" value="Menor"> $ 30.000
-                </div>
+                <input type="radio" id="amount1" name="amount" value=10000 />
+                <label for="amount1">$ 10.000</label>
+          
+                <input type="radio" id="amount2" name="amount" value=20000 />
+                <label for="amount2">$ 20.000</label>
+          
+                <input type="radio" id="amount3" name="amount" value=30000 />
+                <label for="amount3">$ 30.000</label>
             </div>
+
             <div class="ingresar">
                 <h4>¿Cuanto cuotas?</h4>
-                <div class="ingresar__cuotas">
-                    <input type="radio" name="edad" value="Mayor"> 12
-                </div> 
-                <div class="ingresar__cuotas">
-                    <input type="radio" name="edad" value="Menor"> 24
-                </div>
-                <div class="ingresar__cuotas">
-                    <input type="radio" name="edad" value="Menor"> 36
-                </div>
+                <input type="radio" id="fees12" name="fees" value=12 />
+                <label for="fees12">12</label>
+          
+                <input type="radio" id="fees24" name="fees" value=24 />
+                <label for="fees24">24</label>
+          
+                <input type="radio" id="fees36" name="fees" value=36 />
+                <label for="fees36">36</label>
             </div>
+
             <div class="ingresar" id="boton_formulario" >
-                <input id="enviar" type="submit" value="Enviar" >
+                <input id="enviar" type="button" value="Enviar" >
                 <input id="reset" type="reset" value="Limpiar">
             </div>
-            
+
         </form>
     </main>
     <footer>
 
     </footer>
+    
 </body>
+
+<script type="text/javaScript" src="../scripts/index.js"></script>
+
 </html>
