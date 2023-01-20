@@ -1,3 +1,518 @@
+(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+"use strict";
+
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+var doc = require('arg.js').document;
+var mayor;
+var montoPrestamo = 0;
+var numeroDeCuotas = 0;
+var montoPorCuota = 0;
+var recargoPorCuota = 0;
+var sueldoApto = 0;
+var aprodabo = false;
+var porcentajeDeRecargo;
+var recargo;
+var nombre;
+var apellido;
+var mail;
+var dni;
+var recargoPorMora = 0;
+var pagarCuota;
+var cuantosAños;
+var listaPrestamos = [];
+var Prestamo = /*#__PURE__*/function () {
+  function Prestamo(nombre, apellido, dni, mail, fechaNacimiento, montoPrestamo, numeroDeCuotas) {
+    _classCallCheck(this, Prestamo);
+    this.nombre = nombre;
+    this.apellido = apellido;
+    this.fechaNacimiento = fechaNacimiento;
+    this.dni = dni;
+    this.mail = mail;
+    this.montoPrestamo = parseFloat(montoPrestamo);
+    this.numeroDeCuotas = parseFloat(numeroDeCuotas);
+    /* this.montoPorCuota = parseFloat(montoPorCuota); */
+    if (numeroDeCuotas == 12) {
+      this.porcentajeDeRecargo = 0.20;
+    }
+    if (numeroDeCuotas == 24) {
+      this.porcentajeDeRecargo = 0.30;
+    }
+    if (numeroDeCuotas == 36) {
+      this.porcentajeDeRecargo = 0.40;
+    }
+    this.montoPorCuota = this.montoPrestamo / this.numeroDeCuotas + this.montoPrestamo / this.numeroDeCuotas * this.porcentajeDeRecargo;
+  }
+  _createClass(Prestamo, [{
+    key: "saludar",
+    value: function saludar() {}
+  }, {
+    key: "otorgado",
+    value: function otorgado() {
+      this.otorgado = true;
+    }
+  }, {
+    key: "recargoCuota",
+    value: function recargoCuota() {}
+  }]);
+  return Prestamo;
+}();
+console.log('prueba validador dni fernandito', doc.isValidDni('123123'));
+function validarFormulario() {
+  console.log("prueba validarFormulario 1");
+  var nombre = document.getElementById("nombre").value;
+  var apellido = document.getElementById("apellido").value;
+  var dni = document.getElementById("dni").value;
+  var email = document.getElementById("email").value;
+  var fechaNacimiento = document.getElementById("nacimiento").value;
+  var montoPrestamo = document.querySelector("input[name=amount]:checked").value;
+  var numeroDeCuotas = document.querySelector("input[name=fees]:checked").value;
+  var nuevoPrestamo = new Prestamo(nombre, apellido, dni, email, fechaNacimiento, montoPrestamo, numeroDeCuotas);
+  console.log(nuevoPrestamo);
+  listaPrestamos.push(nuevoPrestamo);
+  localStorage.setItem("prestamos", JSON.stringify(listaPrestamos));
+  console.log("prueba validarFormulario 2");
+  var ventana = document.getElementById("ventana__informacion");
+  ventana.innerHTML = "Bienvenido ".concat(nuevoPrestamo.nombre, " ").concat(nuevoPrestamo.apellido, " a nuestra Empresa. A requerido el monto de $ ").concat(nuevoPrestamo.montoPrestamo, " a pagar en ").concat(nuevoPrestamo.numeroDeCuotas, " cuotas, El valor por cuota le quedaria en $ ").concat(Math.round(nuevoPrestamo.montoPorCuota), ", Si la informacion corresponde con lo solicitado le enviaremos un mail a ").concat(nuevoPrestamo.mail, " para coordinar los ultimos detalles");
+  console.log("prueba validarFormulario 3");
+  renderPedidoRealizado();
+  console.log("prueba validarFormulario 4");
+  reset();
+}
+function renderPedidoRealizado() {
+  var modal = document.getElementById("modal");
+  modal.style.visibility = "visible";
+  modal.style.margin = "2rem";
+  modal.style.padding = "2rem";
+  modal.style.transitionDuration = "1s";
+}
+function eliminarRenderPedido() {
+  var modal = document.getElementById("modal");
+  console.log("eliminar onclick console log");
+  modal.style.visibility = "hidden";
+  modal.style.margin = "0rem";
+  modal.style.padding = "0rem";
+  modal.style.transitionDuration = "1s";
+}
+var eliminar = document.getElementById('boton_informacion_eliminar');
+eliminar.addEventListener("click", eliminarRenderPedido);
+var formulario = document.getElementById("enviar");
+formulario.addEventListener("click", validarFormulario);
+var prestamo1 = new Prestamo("Fernando", "Masetto", 38581294, "masettofernando", new Date(), 30000, 12);
+listaPrestamos.push(prestamo1);
+function getEdad(dateString) {
+  var hoy = new Date();
+  var fechaNacimiento = new Date(dateString);
+  var edad = hoy.getFullYear() - fechaNacimiento.getFullYear();
+  var diferenciaMeses = hoy.getMonth() - fechaNacimiento.getMonth();
+  if (diferenciaMeses < 0 || diferenciaMeses === 0 && hoy.getDate() < fechaNacimiento.getDate()) {
+    edad--;
+  }
+  return edad;
+}
+
+/* 
+// CBUs identify a bank account
+var cbu = require('arg.js').cbu;
+var valid = cbu.isValid('123'); // false
+
+// CUITs identify a person or a company
+var cuit = require('arg.js').cuit;
+var valid = cuit.isValid('27361705039'); //true
+
+// DNIs identify a person (including a foreigner living in Argentina)
+var doc = require('arg.js').document;
+var validDni = doc.isValidDni('36111222'); //true
+
+// Phones will be returned with the country and area code
+var phones = require('arg.js').phone;
+var cleanPhone = phones.clean('1556623011', '11'); //+5491156623011 */
+
+},{"arg.js":2}],2:[function(require,module,exports){
+var cbu = require('./src/cbu');
+var cuit = require('./src/cuit');
+var phone = require('./src/phone');
+var document = require('./src/document');
+
+module.exports = {
+  cbu: cbu,
+  cuit: cuit,
+  phone: phone,
+  document: document
+};
+},{"./src/cbu":3,"./src/cuit":4,"./src/document":5,"./src/phone":6}],3:[function(require,module,exports){
+/**
+ * @module cbu
+ */
+
+ var _isLengthOk = function(cbu) {
+    return (cbu && cbu.length == 22);
+};
+
+var _isValidAccount = function(acc) {
+    if (!acc || acc.length !== 14) {
+        return false;
+    }
+
+    var sum = acc[0] * 3 + acc[1] * 9 + acc[2] * 7 + acc[3] * 1 + acc[4] * 3 + acc[5] * 9 + acc[6] * 7 + acc[7] * 1 + acc[8] * 3 + acc[9] * 9 + acc[10] * 7 + acc[11] * 1 + acc[12] * 3;
+    var diff = (10 - (sum % 10)) % 10; // the result of this should be only 1 digit
+    var checksum = acc[13];
+
+    return diff == checksum;
+};
+
+var _isValidBankCode = function(code) {
+    if (!code || code.length !== 8) {
+        return false;
+    }
+    var bank = code.substr(0, 3);
+    var checksumOne = code[3];
+    var branch = code.substr(4, 3);
+    var checksumTwo = code[7];
+
+    var sum = bank[0] * 7 + bank[1] * 1 + bank[2] * 3 + checksumOne * 9 + branch[0] * 7 + branch[1] * 1 + branch[2] * 3;
+    var diff = (10 - (sum % 10)) % 10; // the result of this should be only 1 digit
+
+    return diff == checksumTwo;
+};
+
+/**
+ * @description Returns whether a CBU is valid.
+ * @param {string} cbu
+ * @returns {boolean} isValid
+ */
+var isValid = function(cbu) {
+    if (!cbu || !cbu.substr) return false;
+    var bankCode = cbu.substr(0, 8);
+    var accountCode = cbu.substr(8, 14);
+    return _isLengthOk(cbu) && _isValidBankCode(bankCode) && _isValidAccount(accountCode);
+};
+
+/**
+ * @description Returns the name of the bank associated to a given CBU.
+ * @param {string} cbu
+ * @returns {string} name of the bank
+ * @throws Will throw if the code is not associated to a bank
+ */
+var getAssociatedBank = function(cbu) {
+  if (!cbu) throw new Error('No CBU provided');
+  if (!isValid(cbu)) throw new Error('CBU is not valid');
+  // Info: http://www.afip.gob.ar/aplicativos/
+    // > Ganancias Personas Jurídicas - Sociedades > Versión 16.0 Release 1 > Tablas del sistema > Bancos (See list)
+  var code = parseInt(cbu.substr(0, 3), 10);
+  switch(code) {
+    case 5: return   'The Royal Bank of Scotland N.V.';
+    case 7: return   'Banco de Galicia y Buenos Aires S.A.';
+    case 11: return  'Banco de la Nación Argentina';
+    case 14: return  'Banco de la Provincia de Buenos Aires';
+    case 15: return  'Industrial and Comercial Bank of China';
+    case 16: return  'Citibank N.A.';
+    case 17: return  'BBVA Banco Francés S.A.';
+    case 18: return  'The Bank of Tokyo-Mitsubishi UFJ, LTD.';
+    case 20: return  'Banco de la Provincia de Córdoba S.A.';
+    case 27: return  'Banco Supervielle S.A.';
+    case 29: return  'Banco de la Ciudad de Buenos Aires';
+    case 30: return  'Central de la República Argentina';
+    case 34: return  'Banco Patagonia S.A.';
+    case 44: return  'Banco Hipotecario S.A.';
+    case 45: return  'Banco de San Juan S.A.';
+    case 46: return  'Banco do Brasil S.A.';
+    case 60: return  'Banco de Tucumán S.A.';
+    case 65: return  'Banco Municipal de Rosario';
+    case 72: return  'Banco Santander Río S.A.';
+    case 83: return  'Banco del Chubut S.A.';
+    case 86: return  'Banco de Santa Cruz S.A.';
+    case 93: return  'Banco de la Pampa Sociedad de Economía Mixta';
+    case 94: return  'Banco de Corrientes S.A.';
+    case 97: return  'Banco Provincia del Neuquén S.A.';
+    case 143: return 'Brubank S.A.U.';
+    case 147: return 'Banco Interfinanzas S.A.';
+    case 150: return 'HSBC Bank Argentina S.A.';
+    case 165: return 'JP Morgan Chase Bank NA (Sucursal Buenos Aires)';
+    case 191: return 'Banco Credicoop Cooperativo Limitado';
+    case 198: return 'Banco de Valores S.A.';
+    case 247: return 'Banco Roela S.A.';
+    case 254: return 'Banco Mariva S.A.';
+    case 259: return 'Banco Itaú Argentina S.A.';
+    case 262: return 'Bank of America National Association';
+    case 266: return 'BNP Paribas';
+    case 268: return 'Banco Provincia de Tierra del Fuego';
+    case 269: return 'Banco de la República Oriental del Uruguay';
+    case 277: return 'Banco Saenz S.A.';
+    case 281: return 'Banco Meridian S.A.';
+    case 285: return 'Banco Macro S.A.';
+    case 295: return 'American Express Bank LTD. S.A.';
+    case 299: return 'Banco Comafi S.A.';
+    case 300: return 'Banco de Inversión y Comercio Exterior S.A.';
+    case 301: return 'Banco Piano S.A.';
+    case 305: return 'Banco Julio S.A.';
+    case 309: return 'Nuevo Banco de la Rioja S.A.';
+    case 310: return 'Banco del Sol S.A.';
+    case 311: return 'Nuevo Banco del Chaco S.A.';
+    case 312: return 'MBA Lazard Banco de Inversiones S.A.';
+    case 315: return 'Banco de Formosa S.A.';
+    case 319: return 'Banco CMF S.A.';
+    case 321: return 'Banco de Santiago del Estero S.A.';
+    case 322: return 'Banco Industrial S.A.';
+    case 325: return 'Deutsche Bank S.A.';
+    case 330: return 'Nuevo Banco de Santa Fe S.A.';
+    case 331: return 'Banco Cetelem Argentina S.A.';
+    case 332: return 'Banco de Servicios Financieros S.A.';
+    case 336: return 'Banco Bradesco Argentina S.A.';
+    case 338: return 'Banco de Servicios y Transacciones S.A.';
+    case 339: return 'RCI Banque S.A.';
+    case 340: return 'BACS Banco de Crédito y Securitización S.A.';
+    case 341: return 'Más Ventas S.A.';
+    case 384: return 'Wilobank S.A.';
+    case 386: return 'Nuevo Banco de Entre Ríos S.A.';
+    case 389: return 'Banco Columbia S.A.';
+    case 405: return 'Ford Credit Compañía Financiera S.A.';
+    case 406: return 'Metrópolis Compañía Financiera S.A.';
+    case 408: return 'Compañía Financiera Argentina S.A.';
+    case 413: return 'Montemar Compañía Financiera S.A.';
+    case 415: return 'Multifinanzas Compañía Financiera S.A.';
+    case 428: return 'Caja de Crédito Coop. La Capital del Plata LTDA.';
+    case 431: return 'Banco Coinag S.A.';
+    case 432: return 'Banco de Comercio S.A.';
+    case 434: return 'Caja de Crédito Cuenca Coop. LTDA.';
+    case 437: return 'Volkswagen Credit Compañía Financiera S.A.';
+    case 438: return 'Cordial Compañía Financiera S.A.';
+    case 440: return 'Fiat Crédito Compañía Financiera S.A.';
+    case 441: return 'GPAT Compañía Financiera S.A.';
+    case 442: return 'Mercedes-Benz Compañía Financiera Argentina S.A.';
+    case 443: return 'Rombo Compañía Financiera S.A.';
+    case 444: return 'John Deere Credit Compañía Financiera S.A.';
+    case 445: return 'PSA Finance Argentina Compañía Financiera S.A.';
+    case 446: return 'Toyota Compañía Financiera de Argentina S.A.';
+    case 448: return 'Finandino Compañía Financiera S.A.';
+    case 992: return 'Provincanje S.A.';
+  }
+
+  throw new Error('Code not associated to any bank: ' + code);
+}
+
+/**
+ * @description Returns the bank's branch associated to a given CBU.
+ * @param {string} cbu
+ * @returns {string} branch
+ */
+var getBranch = function(cbu) {
+  if (!cbu) throw new Error('No CBU provided')
+  if (!isValid(cbu)) throw new Error('CBU is not valid');
+  return cbu.substr(4, 3);
+};
+
+/**
+ * @description Returns the bank's code associated to a given CBU.
+ * @param {string} cbu
+ * @returns {int} bank code
+ */
+var getBankCode = function(cbu) {
+  if (!cbu) throw new Error('No CBU provided')
+  if (!isValid(cbu)) throw new Error('CBU is not valid');
+  return parseInt(cbu.substr(0, 3), 10);
+}
+
+/**
+ * @description Returns the account number associated to a given CBU.
+ * @param {string} cbu
+ * @returns {string} account number
+ */
+var getAccountNumber = function (cbu) {
+  if (!cbu) throw new Error("No CBU provided");
+  if (!isValid(cbu)) throw new Error("CBU is not valid");
+  return cbu.substr(8, 14);
+}
+
+module.exports = {
+  _isLengthOk: _isLengthOk,
+  _isValidAccount: _isValidAccount,
+  _isValidBankCode: _isValidBankCode,
+  isValid: isValid,
+  getAssociatedBank: getAssociatedBank,
+  getBankCode: getBankCode,
+  getBranch: getBranch,
+  getAccountNumber: getAccountNumber,
+};
+
+},{}],4:[function(require,module,exports){
+/**
+ * @module cuit
+ */
+
+ var _isLengthOk = function(cuit) {
+    return (!!cuit && cuit.length == 11);
+};
+
+var _isTypeOk = function(cuit) {
+  if (!cuit || !cuit.substr) return false
+  var code = parseInt(cuit.substr(0, 2), 10);
+  var validTypes = [20, 23, 24, 27, 30, 33, 34];
+  return validTypes.indexOf(code) > -1;
+};
+
+var _checksumIsOk = function(sCUIT) {
+    if (!sCUIT) return false
+    var sCUIT = String(sCUIT);
+    var aCUIT = sCUIT.split('');
+
+    var aMult = [5, 4, 3, 2, 7, 6, 5, 4, 3, 2];
+    var sum = 0;
+    for (var i = 0; i <= 9; i++) {
+        sum += aCUIT[i] * aMult[i];
+    }
+
+    var diff = 11 - (sum % 11);
+    var checksum = aCUIT[10];
+
+    if (diff == 11) diff = 0; // do not consider diff == 10
+
+    return (diff == checksum);
+}
+
+/**
+ * @description Returns whether a given CUIT or CUIL is valid
+ * @param {string} cuit
+ * @returns {boolean} isValid
+ */
+var isValid = function(cuit) {
+  return _isLengthOk(cuit) && _isTypeOk(cuit) && _checksumIsOk(cuit);
+};
+
+module.exports = {
+    _isLengthOk: _isLengthOk,
+    _checksumIsOk: _checksumIsOk,
+    _isTypeOk: _isTypeOk,
+    isValid: isValid
+};
+
+},{}],5:[function(require,module,exports){
+/**
+ * @module document
+ */
+
+var isNumberRegex = /^\d+$/;
+
+/**
+ * @description Returns whether a string is only numbers
+ * @param {string} str value to be evaluated.
+ * @returns {boolean} isValid
+ * @private
+ */
+var _isOnlyNumbers = function (str) {
+  if (!str) return false;
+  return isNumberRegex.test(str);
+};
+
+/**
+ * @description Returns whether a DNI (Documento Nacional de Identidad) is valid.
+ * @param {string} dni
+ * @returns {boolean} isValid
+ */
+var isValidDni = function (dni) {
+  if (!dni) return false;
+  var dniString = dni.toString();
+  return dniString.length >= 7 && dniString.length <= 8 && _isOnlyNumbers(dniString);
+};
+
+/**
+ * @description Returns whether a CI (Cedula de Identidad) is valid.
+ * @param {string} ci
+ * @returns {boolean} isValid
+ */
+var isValidCi = function (ci) {
+  if (!ci) return false;
+  var ciString = ci.toString();
+  return (ciString.length >= 1 && ciString.length <= 9);
+};
+
+/**
+ * @description Returns whether a lc (Licencia de Conducir) is valid.
+ * @param {string} lc
+ * @returns {boolean} isValid
+ */
+var isValidLc = function (lc) {
+  if (!lc) return false;
+  var lcString = lc.toString();
+  return (lcString.length >= 6 && lcString.length <= 7);
+};
+
+/**
+ * @description Returns whether a LE (Libreta de Enrolamiento) is valid.
+ * @param {string} le
+ * @returns {boolean} isValid
+ */
+var isValidLe = function (le) {
+  if (!le) return false;
+  var leString = le.toString();
+  return (leString.length >= 6 && leString.length <= 7);
+};
+
+module.exports = {
+  isValidDni: isValidDni,
+  isValidCi: isValidCi,
+  isValidLc: isValidLc,
+  isValidLe: isValidLe
+};
+
+},{}],6:[function(require,module,exports){
+/**
+ * @module phone
+ */
+
+var phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
+var PNF = require('google-libphonenumber').PhoneNumberFormat;
+
+/**
+ * @description Cleans a phone number
+ * @example returns +5491156623011 for 1556623011
+ * @param {string} targetPhone phone number
+ * @param {string} areaCode area code, default is 11
+ * @returns {string} Cleaned phone number
+ */
+var clean = function (targetPhone, areaCode) {
+  var defaultCountry = 'AR';
+  areaCode = areaCode || '11';
+
+  var tel;
+  try {
+    tel = phoneUtil.parse(targetPhone, defaultCountry);
+    if (tel.getCountryCode() == '54') {
+      var national = tel.getNationalNumber().toString();
+      if (national.length < 10) {
+        if (areaCode) {
+          return clean(areaCode + national, 'AR');
+        }
+        else
+          throw "Unknown area code for " + targetPhone;
+      }
+      else if (national[0] != '9') {
+        return clean('+549' + national, 'AR');
+      }
+    }
+  }
+  catch (error) {
+    throw "Can't parse number " + targetPhone + ": " + error;
+  }
+
+  if (tel) {
+    return phoneUtil.format(tel, PNF.E164);
+  }
+  else {
+    throw "Unknown error."
+  }
+};
+
+module.exports = {
+  clean: clean
+};
+
+},{"google-libphonenumber":7}],7:[function(require,module,exports){
+(function (global){(function (){
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.libphonenumber = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 var COMPILED = !0, goog = goog || {};
 goog.global = this;
@@ -4954,3 +5469,5 @@ module.exports = exports["default"];
 
 },{}]},{},[1])(1)
 });
+}).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}]},{},[1]);

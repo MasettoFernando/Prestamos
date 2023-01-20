@@ -1,5 +1,48 @@
 {
+  "name": "pre-rentrega-1-masett-js",
+  "version": "1.0.0",
+  "description": "Prestamos",
   "dependencies": {
-    "arg.js": "^1.1.7"
+    "arg.js": "^1.1.7",
+    "browserify": "^17.0.0",
+    "watchify": "^4.0.0"
+  },
+  "main": "index.js",
+  "scripts": {
+    "build": "browserify index.js -o dist/bundle.js",
+    "watch": "watchify index.js -o dist/bundle.js -v",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MasettoFernando/Prestamos.git"
+  },
+  "keywords": [
+    "prestamos",
+    "js",
+    "api"
+  ],
+  "author": "Fernando Masetto",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MasettoFernando/Prestamos/issues"
+  },
+  "homepage": "https://github.com/MasettoFernando/Prestamos#readme",
+  "devDependencies": {
+    "@babel/preset-env": "^7.20.2",
+    "@babel/core": "^7.20.12",
+    "babelify": "^10.0.0"
+  },
+  "browserify": {
+    "transform": [
+      [
+        "babelify",
+        {
+          "presets": [
+            "@babel/preset-env"
+          ]
+        }
+      ]
+    ]
   }
 }
