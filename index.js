@@ -60,6 +60,8 @@ class Prestamo{
     }
 }
 
+console.log('prueba validador dni fernandito', doc.isValidDni('123123'))
+
 
 
 function validarFormulario(){ 
