@@ -130,3 +130,7 @@ h4{
     padding: 8px;
     font-size: 20px;
 }
+
+#provincia{
+    max-width: 100px;
+}

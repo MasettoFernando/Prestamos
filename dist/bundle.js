@@ -25,17 +25,38 @@ var recargoPorMora = 0;
 var pagarCuota;
 var cuantosAños;
 var listaPrestamos = [];
+
+
+const provincia = document.getElementById("provincia")
+fetch('../data.json')
+    .then( (res) => res.json() )
+    .then( (data) => {
+
+        data.forEach ((producto) => {
+            const option = document.createElement('option')
+            option.innerHTML = producto.nombre
+        
+            provincia.append(option)
+        })
+
+})
+
 var Prestamo = /*#__PURE__*/function () {
-  function Prestamo(nombre, apellido, dni, mail, fechaNacimiento, montoPrestamo, numeroDeCuotas) {
+  function Prestamo(nombre, apellido, dni, mail, fechaNacimiento, provincia, montoPrestamo, numeroDeCuotas) {
     _classCallCheck(this, Prestamo);
     this.nombre = nombre;
     this.apellido = apellido;
     this.fechaNacimiento = fechaNacimiento;
-    this.dni = dni;
+    if(doc.isValidDni(dni)){
+      console.log('es valido')
+      this.dni = dni
+    }else{
+      console.log('ingrese un DNI valido')
+    }
     this.mail = mail;
+    this.provincia = provincia;
     this.montoPrestamo = parseFloat(montoPrestamo);
     this.numeroDeCuotas = parseFloat(numeroDeCuotas);
-    /* this.montoPorCuota = parseFloat(montoPorCuota); */
     if (numeroDeCuotas == 12) {
       this.porcentajeDeRecargo = 0.20;
     }
@@ -61,27 +82,30 @@ var Prestamo = /*#__PURE__*/function () {
   }]);
   return Prestamo;
 }();
-console.log('prueba validador dni fernandito', doc.isValidDni('123123'));
+
 function validarFormulario() {
-  console.log("prueba validarFormulario 1");
   var nombre = document.getElementById("nombre").value;
   var apellido = document.getElementById("apellido").value;
   var dni = document.getElementById("dni").value;
   var email = document.getElementById("email").value;
   var fechaNacimiento = document.getElementById("nacimiento").value;
+  var provincia = document.getElementById("provincia").value;
   var montoPrestamo = document.querySelector("input[name=amount]:checked").value;
   var numeroDeCuotas = document.querySelector("input[name=fees]:checked").value;
-  var nuevoPrestamo = new Prestamo(nombre, apellido, dni, email, fechaNacimiento, montoPrestamo, numeroDeCuotas);
+  var nuevoPrestamo = new Prestamo(nombre, apellido, dni, email, fechaNacimiento, provincia, montoPrestamo, numeroDeCuotas);
+  
   console.log(nuevoPrestamo);
+  
   listaPrestamos.push(nuevoPrestamo);
   localStorage.setItem("prestamos", JSON.stringify(listaPrestamos));
-  console.log("prueba validarFormulario 2");
+  
+  
   var ventana = document.getElementById("ventana__informacion");
-  ventana.innerHTML = "Bienvenido ".concat(nuevoPrestamo.nombre, " ").concat(nuevoPrestamo.apellido, " a nuestra Empresa. A requerido el monto de $ ").concat(nuevoPrestamo.montoPrestamo, " a pagar en ").concat(nuevoPrestamo.numeroDeCuotas, " cuotas, El valor por cuota le quedaria en $ ").concat(Math.round(nuevoPrestamo.montoPorCuota), ", Si la informacion corresponde con lo solicitado le enviaremos un mail a ").concat(nuevoPrestamo.mail, " para coordinar los ultimos detalles");
-  console.log("prueba validarFormulario 3");
+  ventana.innerHTML = "Bienvenido ".concat(nuevoPrestamo.nombre, " ").concat(nuevoPrestamo.apellido, " con DNI: " ).concat(nuevoPrestamo.dni, " a nuestra Empresa. A requerido el monto de $ ").concat(nuevoPrestamo.montoPrestamo, " a pagar en ").concat(nuevoPrestamo.numeroDeCuotas, " cuotas, El valor por cuota le quedaria en $ ").concat(Math.round(nuevoPrestamo.montoPorCuota), ", Si la informacion corresponde con lo solicitado le enviaremos un mail a ").concat(nuevoPrestamo.mail, " para coordinar los ultimos detalles e indicarle a que sucursal de ").concat(nuevoPrestamo.provincia, " le correspondería.");
+  
   renderPedidoRealizado();
-  console.log("prueba validarFormulario 4");
-  reset();
+  
+  
 }
 function renderPedidoRealizado() {
   var modal = document.getElementById("modal");
@@ -102,8 +126,7 @@ var eliminar = document.getElementById('boton_informacion_eliminar');
 eliminar.addEventListener("click", eliminarRenderPedido);
 var formulario = document.getElementById("enviar");
 formulario.addEventListener("click", validarFormulario);
-var prestamo1 = new Prestamo("Fernando", "Masetto", 38581294, "masettofernando", new Date(), 30000, 12);
-listaPrestamos.push(prestamo1);
+
 function getEdad(dateString) {
   var hoy = new Date();
   var fechaNacimiento = new Date(dateString);
@@ -115,22 +138,6 @@ function getEdad(dateString) {
   return edad;
 }
 
-/* 
-// CBUs identify a bank account
-var cbu = require('arg.js').cbu;
-var valid = cbu.isValid('123'); // false
-
-// CUITs identify a person or a company
-var cuit = require('arg.js').cuit;
-var valid = cuit.isValid('27361705039'); //true
-
-// DNIs identify a person (including a foreigner living in Argentina)
-var doc = require('arg.js').document;
-var validDni = doc.isValidDni('36111222'); //true
-
-// Phones will be returned with the country and area code
-var phones = require('arg.js').phone;
-var cleanPhone = phones.clean('1556623011', '11'); //+5491156623011 */
 
 },{"arg.js":2}],2:[function(require,module,exports){
 var cbu = require('./src/cbu');
